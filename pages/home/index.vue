@@ -176,22 +176,37 @@ export default {
     const loadArticles = store.state.user && tab === 'your_feed'
       ? getFeedArticles
       : getArticles
-    const [articleRes, tagRes] = await Promise.all([
-      loadArticles({
-        tag,
+
+    try {
+      const [articleRes, tagRes] = await Promise.all([
+        loadArticles({
+          tag,
+          limit,
+          offset: (page - 1) * limit
+        }),
+        getTags()
+      ])
+      const { data } = articleRes
+      const { data: tagData } = tagRes
+      data.articles.forEach((article) => article.favoriteDisabled = false)
+
+      return {
+        articles: data.articles,
+        count: data.articlesCount,
+        tags: tagData.tags,
         limit,
-        offset: (page - 1) * limit
-      }),
-      getTags()
-    ])
-    const { data } = articleRes
-    const { data: tagData } = tagRes
-    data.articles.forEach((article) => article.favoriteDisabled = false)
+        page,
+        tag,
+        tab
+      }
+    } catch (err) {
+      console.log(err)
+    }
 
     return {
-      articles: data.articles,
-      count: data.articlesCount,
-      tags: tagData.tags,
+      articles: [],
+      count: 0,
+      tags: [],
       limit,
       page,
       tag,

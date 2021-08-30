@@ -19,3 +19,23 @@ export const addFavorite = (slug, data) => {
 export const deleteFavorite = (slug, data) => {
   return request.delete(`/api/articles/${slug}/favorite`, data)
 }
+
+// 获取文章详情
+export const getArticle = (slug) => {
+  return request.get(`/api/articles/${slug}`)
+}
+
+// 创建文章
+export const addArticle = (data) => {
+  return request.post('/api/articles', data)
+}
+
+// 获取评论
+export const getComments = (slug) => {
+  return request.get(`/api/articles/${slug}/comments`)
+}
+
+// 添加评论
+export const addComments = (slug, data) => {
+  return request.post(`/api/articles/${slug}/comments`, data)
+}
