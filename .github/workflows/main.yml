@@ -53,7 +53,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd /www/node/realworld-nuxt || { mkdir -p /www/node/realworld-nuxt; cd /www/node/realworld-nuxt; }
+          cd /www/node/realworld-nuxt
           wget https://github.com/Phooyau/realworld-nuxt/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
           npm install --production
