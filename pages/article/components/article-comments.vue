@@ -9,7 +9,6 @@
       </div>
       <div class="card-footer">
         <img :src="article.author.image" class="comment-author-img" />
-        <!-- <img src="https://thirdqq.qlogo.cn/g?b=oidb&k=V7g4wibr5bzgZzjNYRdgSTQ&s=140&t=1555434647" class="comment-author-img" /> -->
         <button class="btn btn-sm btn-primary">
           Post Comment
         </button>
@@ -71,14 +70,18 @@ export default {
       comments: []
     }
   },
-  async created() {
-    const { data } = await getComments(this.article.slug)
-    this.comments = data.comments
+  created() {
+    this.loadComments()
   },
   methods: {
+    async loadComments() {
+      const { data } = await getComments(this.article.slug)
+      this.comments = data.comments
+    },
     async onSubmit() {
       const { data } = await addComments(this.article.slug, { comment: this.comment })
-      console.log(data)
+      this.comment.body = ''
+      this.loadComments()
     }
   }
 }

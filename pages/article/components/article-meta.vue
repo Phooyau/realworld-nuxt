@@ -25,7 +25,7 @@
     </div>
     <button class="btn btn-sm btn-outline-secondary" :class="{ active: article.following }">
       <i class="ion-plus-round"></i>
-      &nbsp; Follow Eric Simons <span class="counter">(10)</span>
+      &nbsp; Follow {{ article.author.username }} <span class="counter">(10)</span>
     </button>
     &nbsp;&nbsp;
     <button class="btn btn-sm btn-outline-primary" :class="{ active: article.favorited }">

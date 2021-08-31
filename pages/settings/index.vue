@@ -59,8 +59,10 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { data } = await editUser(this.formData)
-      // console.log(data)
+      const { data } = await editUser({ user: this.formData })
+      this.$router.push({
+        name: 'home'
+      })
     }
   }
 }

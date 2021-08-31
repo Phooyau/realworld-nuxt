@@ -58,54 +58,13 @@
             </ul>
           </div>
 
-          <div class="article-preview" v-for="article in articles" :key="article.slug">
-            <div class="article-meta">
-              <nuxt-link
-                :to="{
-                  name: 'profile',
-                  params: {
-                    username: article.author.username
-                  }
-                }"
-              >
-                <img :src="article.author.image" />
-              </nuxt-link>
-              <div class="info">
-                <nuxt-link
-                  class="author"
-                  :to="{
-                    name: 'profile',
-                    params: {
-                      username: article.author.username
-                    }
-                  }"
-                  >{{ article.author.username }}</nuxt-link
-                >
-                <span class="date">{{ article.createdAt | date('MMM DD, YYYY') }}</span>
-              </div>
-              <button
-                class="btn btn-outline-primary btn-sm pull-xs-right"
-                :class="{ active: article.favorited }"
-                :disabled="article.favoriteDisabled"
-                @click="onFavorite(article)"
-              >
-                <i class="ion-heart"></i> {{ article.favoritesCount }}
-              </button>
-            </div>
-            <nuxt-link
-              class="preview-link"
-              :to="{
-                name: 'article',
-                params: {
-                  slug: article.slug
-                }
-              }"
-            >
-              <h1>{{ article.title }}</h1>
-              <p>{{ article.description }}</p>
-              <span>Read more...</span>
-            </nuxt-link>
+          <!-- <div v-show="loading" class="article-preview">
+            Loading articles...
+          </div> -->
+          <div v-show="(!articles || !articles.length)" class="article-preview">
+            No articles are here... yet.
           </div>
+          <ArticleList :articles="articles"></ArticleList>
 
           <ul class="pagination">
             <li
@@ -160,9 +119,18 @@
 import { mapState } from 'vuex'
 import { getArticles, getFeedArticles, addFavorite, deleteFavorite } from '@/api/article'
 import { getTags } from '@/api/tag'
+import ArticleList from '@/components/article-list'
 
 export default {
   name: 'HomeIndex',
+  components: {
+    ArticleList
+  },
+  data() {
+    return {
+      loading: false
+    }
+  },
   computed: {
     totalPage() {
       return Math.ceil(this.count / this.limit)
@@ -202,7 +170,6 @@ export default {
     } catch (err) {
       console.log(err)
     }
-
     return {
       articles: [],
       count: 0,

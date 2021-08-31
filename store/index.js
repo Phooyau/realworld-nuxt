@@ -18,10 +18,12 @@ export const actions = {
 
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie)
-      try {
-        user = JSON.parse(parsed.rw_user)
-      } catch (err) {
-        console.log(err)
+      if (parsed.rw_user) {
+        try {
+          user = JSON.parse(parsed.rw_user)
+        } catch (err) {
+          console.log(err)
+        }
       }
 
       commit('setUser', user)
