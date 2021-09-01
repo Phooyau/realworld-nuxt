@@ -1,5 +1,6 @@
 export default {
   router: {
+    base: process.env.NODE_ENV === 'production' ? './' : '/',
     linkActiveClass: 'active',
     extendRoutes(routes, resolve) {
       routes.splice(0)
@@ -55,5 +56,10 @@ export default {
   server: {
     host: '0.0.0.0',
     port: 3003
+  },
+  build: {
+    // default '/_nuxt/'
+    // publicPath: 'https://phooyau.com/realworld-nuxt'
+    // publicPath: './_nuxt/'
   }
 }
