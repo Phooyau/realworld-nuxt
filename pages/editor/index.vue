@@ -3,7 +3,7 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
-          <form ref="formRef" @submit.prevent="onSubmit">
+          <form ref="formRef">
             <fieldset>
               <fieldset class="form-group">
                 <input
@@ -81,7 +81,6 @@ export default {
         }
       }
       delete params.article.tag
-      console.log('ggg')
       const { data } = await addArticle(params)
       this.$router.push({
         name: 'home'
@@ -96,7 +95,7 @@ export default {
       this.tagList.splice(index, 1)
     },
     handleSubmit() {
-      this.$refs.formRef.submit()
+      this.onSubmit()
     }
   }
 }

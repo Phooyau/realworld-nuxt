@@ -34,6 +34,13 @@
               </nuxt-link>
             </li>
             <li class="nav-item">
+              <a
+                href="javascript:"
+                class="nav-link"
+                @click="handleLogout"
+              >Sign Out</a>
+            </li>
+            <li class="nav-item">
               <nuxt-link
                 class="nav-link"
                 :to="{
@@ -85,11 +92,21 @@
 
 <script>
 import { mapState } from 'vuex'
+const Cookie = process.client ? require('js-cookie') : undefined
 
 export default {
   name: 'LayoutIndex',
   computed: {
     ...mapState(['user'])
+  },
+  methods: {
+    handleLogout() {
+      this.$store.commit('setUser', null)
+      Cookie.remove('rw_user')
+      this.$router.push({
+        name: 'home'
+      })
+    }
   }
 }
 </script>
