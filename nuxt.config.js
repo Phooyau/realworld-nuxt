@@ -51,5 +51,8 @@ export default {
   plugins: [
     '~/plugins/request.js',
     '~/plugins/date.js'
-  ]
+  ],
+  server: {
+    port: 3003
+  }
 }
