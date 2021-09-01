@@ -97,7 +97,7 @@ export default {
     '$route.query': {
       handler(val) {
         const { tab } = val
-        this.tab = tab
+        tab && (this.tab = tab)
         this.loadArticles()
       },
       immediate: true
