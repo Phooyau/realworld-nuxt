@@ -39,7 +39,7 @@ export default {
     ArticleMeta,
     ArticleComments
   },
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   async asyncData({ params }) {
     const { data } = await getArticle(params.slug)
     const { article } = data

@@ -35,7 +35,7 @@
                       tab: 'author'
                     }
                   }"
-                >My Articles</nuxt-link>
+                >{{ isMe ? 'My' : 'Author\'s' }} Articles</nuxt-link>
               </li>
               <li class="nav-item">
                 <nuxt-link
@@ -64,10 +64,11 @@
 import { getProfile, followUser, unFollowUser } from '@/api/profile'
 import { getArticles } from '@/api/article'
 import ArticleList from '@/components/article-list'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProfileIndex',
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   components: {
     ArticleList
   },
@@ -93,25 +94,25 @@ export default {
   //     profile: {}
   //   }
   // },
+  computed: {
+    isMe() {
+      return this.user && this.user.username === this.$route.params.username
+    },
+    ...mapState(['user'])
+  },
   watch: {
     '$route.query': {
       handler(val) {
         const { tab } = val
         tab && (this.tab = tab)
+        this.loadProfile()
         this.loadArticles()
       },
       immediate: true
     }
   },
-  created() {
-    this.loadProfile()
-    this.$router.push({
-      name: 'profile',
-      query: {
-        tab: this.tab
-      }
-    })
-  },
+  // created() {
+  // },
   methods: {
     async loadProfile() {
       const username = this.$route.params.username
@@ -123,12 +124,9 @@ export default {
       }
     },
     async loadArticles() {
-      const { tab } = this.$route.query
-      if (!tab) {
-        return
-      }
-
-      const username = this.$route.username
+      let { tab } = this.$route.query
+      tab = tab || this.tab
+      const username = this.$route.params.username
       const { data } = await getArticles({
         [tab]: username
       })
@@ -140,9 +138,9 @@ export default {
         return
       }
 
-      const operateUser = following ? followUser : unFollowUser
+      const operateUser = following ? unFollowUser : followUser
       const { data } = await operateUser(username)
-      profile.following = !profile.following
+      this.profile.following = !this.profile.following
     }
   }
 }

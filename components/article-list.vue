@@ -1,5 +1,8 @@
 <template>
   <div class="article-list">
+    <div v-show="(!articles || !articles.length)" class="article-preview">
+      No articles are here... yet.
+    </div>
     <div class="article-preview" v-for="article in articles" :key="article.slug">
       <div class="article-meta">
         <nuxt-link
@@ -52,11 +55,30 @@
 </template>
 
 <script>
+import { addFavorite, deleteFavorite } from '@/api/article'
+
 export default {
   props: {
     articles: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    async onFavorite(article) {
+      article.favoriteDisabled = true
+      if (article.favorited) {
+        // 取消点赞
+        await deleteFavorite(article.slug)
+        article.favorited = false
+        article.favoritesCount -= 1
+      } else {
+        // 添加点赞
+        await addFavorite(article.slug)
+        article.favorited = true
+        article.favoritesCount += 1
+      }
+      article.favoriteDisabled = false
     }
   }
 }

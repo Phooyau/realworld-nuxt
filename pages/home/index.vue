@@ -61,9 +61,6 @@
           <!-- <div v-show="loading" class="article-preview">
             Loading articles...
           </div> -->
-          <div v-show="(!articles || !articles.length)" class="article-preview">
-            No articles are here... yet.
-          </div>
           <ArticleList :articles="articles"></ArticleList>
 
           <ul class="pagination">
@@ -117,7 +114,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getArticles, getFeedArticles, addFavorite, deleteFavorite } from '@/api/article'
+import { getArticles, getFeedArticles } from '@/api/article'
 import { getTags } from '@/api/tag'
 import ArticleList from '@/components/article-list'
 
@@ -180,24 +177,7 @@ export default {
       tab
     }
   },
-  watchQuery: ['page', 'tag', 'tab'],
-  methods: {
-    async onFavorite(article) {
-      article.favoriteDisabled = true
-      if (article.favorited) {
-        // 取消点赞
-        await deleteFavorite(article.slug)
-        article.favorited = false
-        article.favoritesCount -= 1
-      } else {
-        // 添加点赞
-        await addFavorite(article.slug)
-        article.favorited = true
-        article.favoritesCount += 1
-      }
-      article.favoriteDisabled = false
-    }
-  }
+  watchQuery: ['page', 'tag', 'tab']
 }
 </script>
 
