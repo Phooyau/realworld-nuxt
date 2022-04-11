@@ -1,8 +1,9 @@
-name: Publish And Deploy Demo
+name: Publish And Deploy realworld-nuxt
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -53,7 +54,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd /www/node/realworld-nuxt
+          cd /www/node/realworld-nuxt || { mkdir -p /www/node/realworld-nuxt; cd /www/node/realworld-nuxt; }
           rm -rf *
           wget https://github.com/Phooyau/realworld-nuxt/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
